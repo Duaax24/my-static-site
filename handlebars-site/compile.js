@@ -9,3 +9,4 @@ const result = template(data);
 fs.writeFileSync("output.html", result);
 console.log("output.html erstellt!");
 
+
