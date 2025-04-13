@@ -1,0 +1,31 @@
+name: Build and Deploy Handlebars Site
+
+on:
+  push:
+    branches:
+      - main  # Der Workflow wird beim Pushen auf den 'main' Branch ausgelöst
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Der Job wird auf einem Ubuntu-Runner ausgeführt
+
+    steps:
+      - uses: actions/checkout@v3  # Holt das Repository
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3  # Installiert Node.js
+        with:
+          node-version: '20'  # Die verwendete Node.js Version
+
+      - name: Install dependencies
+        run: npm install  # Installiere alle Abhängigkeiten
+
+      - name: Build HTML
+        run: node compile.js  # Führt das Skript aus, um die HTML-Datei zu erstellen
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3  # Verwendet diese Action, um die HTML-Datei auf GitHub Pages zu veröffentlichen
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token, um Berechtigungen zu erlangen
+          publish_dir: ./  # Der Ordner, der veröffentlicht werden soll (Root-Verzeichnis)
+          publish_branch: gh-pages  # Der Branch, auf dem die Seite veröffentlicht wird
